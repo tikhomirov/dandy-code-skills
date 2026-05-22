@@ -8,14 +8,14 @@ Not a generic clean-code manifesto. The skills are mapped to the book chapters: 
 
 ## Quick start
 
-### Install from GitHub with npx
+### Install locally into a project
 
 ```bash
 cd /path/to/your-project
 npx github:tikhomirov/dandy-code-skills install
 ```
 
-This copies skills into:
+This copies skills into the current project:
 
 ```text
 .agents/skills
@@ -23,12 +23,41 @@ This copies skills into:
 .opencode/skills
 ```
 
+### Install globally for user-level agents
+
+```bash
+npx github:tikhomirov/dandy-code-skills install --global
+```
+
+Global mode uses cross-platform Node.js paths:
+
+```text
+~/.agents/skills
+~/.claude/skills
+~/.config/opencode/skills
+```
+
+On Windows these paths are resolved through the user home directory automatically.
+
 ### Install only one target
 
 ```bash
 npx github:tikhomirov/dandy-code-skills install --target agents
 npx github:tikhomirov/dandy-code-skills install --target claude
 npx github:tikhomirov/dandy-code-skills install --target opencode
+npx github:tikhomirov/dandy-code-skills install --global --target claude
+```
+
+### Install into another project path
+
+```bash
+npx github:tikhomirov/dandy-code-skills install --path /path/to/your-project
+```
+
+### Preview changes
+
+```bash
+npx github:tikhomirov/dandy-code-skills install --dry-run
 ```
 
 ### Install manually
@@ -135,14 +164,14 @@ Skills для AI-агентов, вдохновлённые книгой **«Д�
 
 ## Быстрый старт
 
-### Установка через npx из GitHub
+### Установка локально в проект
 
 ```bash
 cd /path/to/your-project
 npx github:tikhomirov/dandy-code-skills install
 ```
 
-Команда скопирует skills в:
+Команда скопирует skills в текущий проект:
 
 ```text
 .agents/skills
@@ -150,12 +179,41 @@ npx github:tikhomirov/dandy-code-skills install
 .opencode/skills
 ```
 
+### Глобальная установка для пользовательских агентов
+
+```bash
+npx github:tikhomirov/dandy-code-skills install --global
+```
+
+Глобальный режим использует кроссплатформенные пути Node.js:
+
+```text
+~/.agents/skills
+~/.claude/skills
+~/.config/opencode/skills
+```
+
+На Windows эти пути автоматически строятся от домашней директории пользователя.
+
 ### Установить только один вариант
 
 ```bash
 npx github:tikhomirov/dandy-code-skills install --target agents
 npx github:tikhomirov/dandy-code-skills install --target claude
 npx github:tikhomirov/dandy-code-skills install --target opencode
+npx github:tikhomirov/dandy-code-skills install --global --target claude
+```
+
+### Установить в другой проект
+
+```bash
+npx github:tikhomirov/dandy-code-skills install --path /path/to/your-project
+```
+
+### Посмотреть, что будет установлено
+
+```bash
+npx github:tikhomirov/dandy-code-skills install --dry-run
 ```
 
 ### Ручная установка
