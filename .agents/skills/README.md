@@ -1,43 +1,43 @@
-# Dandy Code Agent Skills
+# Dandy Code Skills
 
-This directory contains practical skills for codex-style AI agents working with PHP and Laravel code.
+Source of truth for the v2 skill package.
 
-The set is inspired by the Russian book “Денди-код” / “Практики, которые переведут код из «работает» в «вызывающий уважение»”. It does not retell the book. It turns its ideas into operational instructions for review, refactoring, and code generation.
+Public entrypoints:
 
-## Purpose
+- `dandy-style` — core router and recipe map.
+- `dandy-review` — review project/module/file/diff; `/dandy-start` is an onboarding alias.
+- `dandy-commit` — check changed code before commit.
+- `dandy-breakdown` — break down one selected code fragment.
 
-Use these skills to help an agent make code more readable, predictable, honest, low-noise, and safe to maintain without changing business logic by accident.
+Internal recipes live under `dandy-style/recipes`. They are not public entrypoints.
 
-## How to use
+Load order:
 
-- Keep `.agents/skills` as the source of truth for multi-agent setups.
-- Copy compatible skills to `.claude/skills` for Claude Code.
-- Copy compatible skills to `.opencode/skills` for OpenCode.
-- For Pi or another agent, copy each skill directory into that agent's skill/plugin directory if it supports `SKILL.md`-style instructions.
+1. selected `SKILL.md`;
+2. `dandy-style/recipe-map.md`;
+3. only relevant recipes.
 
-## Recommended order
+Do not load every recipe by default.
 
-1. Use `ai-generated-code-sanity-check` when the code was written by an AI agent.
-2. Use `dandy-code-review` for a broad first pass.
-3. Use targeted skills for concrete problems: naming, conditions, early returns, arguments, magic values, comments, exceptions, or testability.
-4. Use `laravel-dandy-pass` for Laravel-specific placement and convention decisions.
-5. Use `readability-refactor` only when the user wants behavior-preserving cleanup.
+---
 
-## Skills
+# Dandy Code Skills
 
-- `dandy-code-review` — broad practical review for readability, neatness, names, noise, nesting, and maintainability.
-- `readability-refactor` — behavior-preserving cleanup of structure, ordering, and visual noise.
-- `naming-cleanup` — improvement of vague or dishonest names in PHP/Laravel code.
-- `early-return-simplifier` — reduction of nesting with guard clauses and early exits.
-- `condition-simplifier` — simplification of complex boolean expressions and branching.
-- `magic-value-extractor` — extraction of meaningful domain values without constant spam.
-- `comments-curator` — removal or rewriting of comments so they explain why, not what.
-- `argument-signature-review` — review of long signatures, flags, nullable clutter, and unstructured arrays.
-- `exception-flow-review` — review of exception handling, logging, messages, and swallowed errors.
-- `testability-pass` — minimal refactoring that makes behavior easier to test with Pest/PHPUnit.
-- `ai-generated-code-sanity-check` — sanity review for AI-written code and project-style drift.
-- `laravel-dandy-pass` — Laravel-specific application of low-noise, convention-first code practices.
+Источник правды для v2-пакета skills.
 
-## Verification
+Публичные точки входа:
 
-After changes, prefer project tools over opinion: Laravel Pint or PSR-12 for formatting, Pest/PHPUnit for tests, and static analysis if the project already uses it.
+- `dandy-style` — ядро, роутер и карта рецептов.
+- `dandy-review` — ревью проекта/модуля/файла/diff; `/dandy-start` — onboarding alias.
+- `dandy-commit` — проверка изменённого кода перед коммитом.
+- `dandy-breakdown` — разбор одного выбранного фрагмента кода.
+
+Внутренние рецепты лежат в `dandy-style/recipes`. Это не публичные entrypoints.
+
+Порядок загрузки:
+
+1. выбранный `SKILL.md`;
+2. `dandy-style/recipe-map.md`;
+3. только релевантные рецепты.
+
+Не загружай все рецепты по умолчанию.
