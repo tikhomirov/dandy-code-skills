@@ -94,7 +94,7 @@ Good prompts:
 Review this project in dandy style.
 Refactor the payment module using Dandy Code rules.
 Check the diff before commit, like a dandy.
-Break down this method and suggest the smallest safe cleanup.
+Break down this method like a dandy.
 ```
 
 ## How it works
@@ -179,7 +179,7 @@ npx github:tikhomirov/dandy-code-skills install --dry-run
 Проверь проект в денди-стиле.
 Отрефактори модуль оплаты по правилам Денди-кода.
 Проверь diff перед коммитом, как денди.
-Разбери этот метод и предложи минимальную безопасную правку.
+Разбери метод, он должен быть как денди.
 ```
 
 ## Как это работает
