@@ -33,51 +33,34 @@ It helps agents review and improve PHP/Laravel code in the spirit of the book **
 
 ## Install
 
-### Local install into a project
+### Interactive install
 
 ```bash
-cd /path/to/your-project
 npx github:tikhomirov/dandy-code-skills install
 ```
 
-This copies skills into:
+In an interactive terminal the installer asks:
 
-```text
-.agents/skills
-.claude/skills
-.opencode/skills
-```
+- install into this project or globally;
+- project directory when local install is selected;
+- target agent: all, `.agents`, Claude Code, or OpenCode;
+- whether to remove old Dandy skills first.
 
-### Global install for user-level agents
+In CI or non-interactive mode it uses safe defaults: local install into the current directory.
 
-```bash
-npx github:tikhomirov/dandy-code-skills install --global
-```
-
-Global mode installs into user-level directories:
-
-```text
-~/.agents/skills
-~/.claude/skills
-~/.config/opencode/skills
-```
-
-The installer is written in Node.js and uses cross-platform filesystem APIs, so it should work on Linux, macOS, and Windows.
-
-### Target one agent
+### Non-interactive examples
 
 ```bash
-npx github:tikhomirov/dandy-code-skills install --target agents
-npx github:tikhomirov/dandy-code-skills install --target claude
-npx github:tikhomirov/dandy-code-skills install --target opencode
-```
-
-Useful options:
-
-```bash
-npx github:tikhomirov/dandy-code-skills install --path /path/to/project
+npx github:tikhomirov/dandy-code-skills install --yes
+npx github:tikhomirov/dandy-code-skills install --global --yes
+npx github:tikhomirov/dandy-code-skills install --target claude --yes
+npx github:tikhomirov/dandy-code-skills install --path /path/to/project --yes
 npx github:tikhomirov/dandy-code-skills install --dry-run
 ```
+
+By default the installer removes old Dandy-owned skill entries before copying the new version. It does **not** delete the whole `skills` directory, so custom user skills should stay safe.
+
+Use `--no-clean` to skip cleanup.
 
 ## Skills
 
@@ -106,8 +89,6 @@ Agents load the package lazily:
 3. `dandy-style/recipe-map.md`;
 4. only recipes that fit the task.
 
-This keeps token usage lower and prevents the agent from applying every rule to every request.
-
 ---
 
 ## Русский
@@ -118,51 +99,34 @@ Dandy Code Agent Skills — небольшой пакет skills для AI-аг�
 
 ## Установка
 
-### Локально в проект
+### Интерактивная установка
 
 ```bash
-cd /path/to/your-project
 npx github:tikhomirov/dandy-code-skills install
 ```
 
-Команда скопирует skills в:
+В интерактивном терминале установщик спросит:
 
-```text
-.agents/skills
-.claude/skills
-.opencode/skills
-```
+- куда ставить: в текущий проект или глобально;
+- директорию проекта, если выбрана локальная установка;
+- для какого агента ставить: все, `.agents`, Claude Code или OpenCode;
+- удалять ли старые Dandy-skills перед установкой.
 
-### Глобально для пользовательских агентов
+В CI или неинтерактивном режиме используются безопасные значения по умолчанию: локальная установка в текущую директорию.
 
-```bash
-npx github:tikhomirov/dandy-code-skills install --global
-```
-
-Глобальная установка кладёт skills в пользовательские директории:
-
-```text
-~/.agents/skills
-~/.claude/skills
-~/.config/opencode/skills
-```
-
-Установщик написан на Node.js и использует кроссплатформенный API файловой системы, поэтому должен работать на Linux, macOS и Windows.
-
-### Только для одного агента
+### Примеры без вопросов
 
 ```bash
-npx github:tikhomirov/dandy-code-skills install --target agents
-npx github:tikhomirov/dandy-code-skills install --target claude
-npx github:tikhomirov/dandy-code-skills install --target opencode
-```
-
-Полезные опции:
-
-```bash
-npx github:tikhomirov/dandy-code-skills install --path /path/to/project
+npx github:tikhomirov/dandy-code-skills install --yes
+npx github:tikhomirov/dandy-code-skills install --global --yes
+npx github:tikhomirov/dandy-code-skills install --target claude --yes
+npx github:tikhomirov/dandy-code-skills install --path /path/to/project --yes
 npx github:tikhomirov/dandy-code-skills install --dry-run
 ```
+
+По умолчанию установщик удаляет старые Dandy-owned skills и затем копирует новую версию. Он **не удаляет всю папку** `skills`, поэтому пользовательские skills не должны пострадать.
+
+Чтобы пропустить очистку, используй `--no-clean`.
 
 ## Skills
 
@@ -190,5 +154,3 @@ npx github:tikhomirov/dandy-code-skills install --dry-run
 2. `dandy-style/source-map.md` для широкого ревью;
 3. `dandy-style/recipe-map.md`;
 4. только рецепты, которые подходят к задаче.
-
-Так тратится меньше токенов, и агент не пытается применить все правила сразу.
