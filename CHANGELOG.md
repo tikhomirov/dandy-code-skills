@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.1.0
+
+### Added
+
+- Interactive installer mode.
+- Prompt to choose installation mode: project or global.
+- Prompt to choose project directory for local install.
+- Prompt to choose target agent: all, `.agents`, Claude Code, or OpenCode.
+- Prompt to clean old Dandy skills before install.
+- `--yes` flag for non-interactive default install.
+- `--no-clean` flag to skip cleanup.
+
+### Changed
+
+- Installer now removes only Dandy-owned skill entries before copying the new version.
+- Installer no longer deletes the whole `skills` directory, so custom user skills should remain safe.
+- README now documents interactive installation and non-interactive examples.
+
 ## 2.0.0
 
 ### Added
