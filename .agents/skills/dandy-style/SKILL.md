@@ -25,7 +25,16 @@ Ask what area hurts if unclear: README/onboarding, project structure, module, di
 
 ### Contextual invocation
 
-Use when the user mentions: Dandy Code, dandy style, dandy-code, денди-код, денди стиль, “по правилам Денди-кода”.
+Use when the user mentions Dandy Code or asks to apply the style inside another task, for example:
+
+- `use Dandy Code style`;
+- `use dandy style`;
+- `apply Dandy Code rules`;
+- `используй денди стиль`;
+- `сделай в денди-стиле`;
+- `отрефактори как денди`;
+- `по правилам Денди-кода`;
+- `разбери как денди`.
 
 Keep the original task primary. Do not start a full project review. Do not scan unrelated files. Load at most 1-3 relevant recipes.
 
