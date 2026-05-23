@@ -1,21 +1,46 @@
-# Dandy Code Agent Skills
+<p align="center">
+  <a href="https://github.com/tabuna/dandy-code">
+    <img src="https://raw.githubusercontent.com/tabuna/dandy-code/main/assets/img/top-hat.svg" width="96" alt="Dandy Code" />
+  </a>
+</p>
 
-Skills for AI coding agents, inspired by **“Денди-код”**.
+<h1 align="center">Dandy Code Agent Skills</h1>
 
-The goal is simple: help an agent write and review PHP/Laravel code in a cleaner, more readable, more human style.
+<p align="center">
+  Skills for AI coding agents inspired by <a href="https://github.com/tabuna/dandy-code">«Денди-код»</a>.
+</p>
 
-Not a generic clean-code manifesto. The skills are mapped to the book chapters: README, code style, code breathing, naming, magic values, method size, early return, conditions, arguments, exceptions, comments, removal, tests, framework rules, upgrades, and AI-generated code.
+<p align="center">
+  <a href="https://github.com/tikhomirov/dandy-code-skills/releases"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/tikhomirov/dandy-code-skills?style=flat-square"></a>
+  <a href="https://github.com/tikhomirov/dandy-code-skills/blob/main/package.json"><img alt="Node" src="https://img.shields.io/badge/node-%3E%3D18-339933?style=flat-square&logo=node.js&logoColor=white"></a>
+  <a href="https://github.com/tikhomirov/dandy-code-skills/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue?style=flat-square"></a>
+  <img alt="Agents" src="https://img.shields.io/badge/agents-Claude%20Code%20%7C%20OpenCode%20%7C%20.agents-purple?style=flat-square">
+</p>
 
-## Quick start
+<p align="center">
+  <a href="https://github.com/tabuna/dandy-code">Book repository</a> ·
+  <a href="https://raw.githubusercontent.com/tabuna/dandy-code/refs/heads/main/export/Dandy%20Code.pdf">PDF</a> ·
+  <a href="https://github.com/tikhomirov/dandy-code-skills/releases">Releases</a>
+</p>
 
-### Install locally into a project
+---
+
+## English
+
+Dandy Code Agent Skills is a small skill package for AI coding agents.
+
+It helps agents review and improve PHP/Laravel code in the spirit of the book **«Денди-код»**: readable README, consistent style, visual breathing, honest names, fewer magic values, smaller methods, early returns, useful comments, tests, framework rules, upgrades, and careful AI-generated code review.
+
+## Install
+
+### Local install into a project
 
 ```bash
 cd /path/to/your-project
 npx github:tikhomirov/dandy-code-skills install
 ```
 
-This copies skills into the current project:
+This copies skills into:
 
 ```text
 .agents/skills
@@ -23,13 +48,13 @@ This copies skills into the current project:
 .opencode/skills
 ```
 
-### Install globally for user-level agents
+### Global install for user-level agents
 
 ```bash
 npx github:tikhomirov/dandy-code-skills install --global
 ```
 
-Global mode uses cross-platform Node.js paths:
+Global mode installs into user-level directories:
 
 ```text
 ~/.agents/skills
@@ -37,141 +62,70 @@ Global mode uses cross-platform Node.js paths:
 ~/.config/opencode/skills
 ```
 
-On Windows these paths are resolved through the user home directory automatically.
+The installer is written in Node.js and uses cross-platform filesystem APIs, so it should work on Linux, macOS, and Windows.
 
-### Install only one target
+### Target one agent
 
 ```bash
 npx github:tikhomirov/dandy-code-skills install --target agents
 npx github:tikhomirov/dandy-code-skills install --target claude
 npx github:tikhomirov/dandy-code-skills install --target opencode
-npx github:tikhomirov/dandy-code-skills install --global --target claude
 ```
 
-### Install into another project path
+Useful options:
 
 ```bash
-npx github:tikhomirov/dandy-code-skills install --path /path/to/your-project
-```
-
-### Preview changes
-
-```bash
+npx github:tikhomirov/dandy-code-skills install --path /path/to/project
 npx github:tikhomirov/dandy-code-skills install --dry-run
-```
-
-### Install manually
-
-```bash
-git clone https://github.com/tikhomirov/dandy-code-skills.git /tmp/dandy-code-skills
-cd /path/to/your-project
-cp -R /tmp/dandy-code-skills/.agents/skills .agents/
-cp -R /tmp/dandy-code-skills/.claude/skills .claude/
-cp -R /tmp/dandy-code-skills/.opencode/skills .opencode/
 ```
 
 ## Skills
 
-### `dandy-style`
+| Skill | Use when |
+|---|---|
+| `dandy-style` | Dandy style is a constraint inside another task. |
+| `dandy-review` | You need a review of a project, module, file, or diff. |
+| `dandy-commit` | You want to check changed code before commit. |
+| `dandy-breakdown` | You want to analyze one method, class, file, or snippet. |
 
-The main router. Use it when Dandy Code is a constraint inside another task.
-
-```text
-Refactor the payment module. Use Dandy Code style.
-```
-
-The agent should keep the original task primary, read the recipe map, and load only the rules that fit the task.
-
-### `dandy-review`
-
-Review a project, module, file, or diff.
-
-```text
-/dandy-review app/Services/OrderService.php
-/dandy-review onboarding
-```
-
-`/dandy-start` is an alias for onboarding review: README, setup, test data, tests, structure, owners.
-
-### `dandy-commit`
-
-Check changed code before commit.
-
-```text
-/dandy-commit review-only
-/dandy-commit fix-safe
-```
-
-It reviews the diff, checks project style, catches suspicious AI-generated code, and suggests safe fixes. It must not commit without explicit approval.
-
-### `dandy-breakdown`
-
-Analyze one method, class, file, or pasted snippet.
-
-```text
-/dandy-breakdown app/Http/Controllers/CheckoutController.php
-```
-
-It explains what the code does, what hurts readability, which recipes apply, and what the smallest safe improvement looks like.
-
-## How it works
-
-The agent loads skills lazily:
-
-1. selected `SKILL.md`;
-2. `dandy-style/source-map.md` for broad review;
-3. `dandy-style/recipe-map.md`;
-4. only the recipes that match the task.
-
-This keeps token usage lower and prevents the agent from applying every rule to every request.
-
-## Package layout
-
-```text
-.agents/skills/          # source of truth
-.claude/skills/          # Claude Code wrappers
-.opencode/skills/        # OpenCode wrappers
-bin/dandy-code-skills.mjs
-package.json
-```
-
-## Good prompts
+Good prompts:
 
 ```text
 Review this project in dandy style.
 Refactor the payment module using Dandy Code rules.
 Check the diff before commit, like a dandy.
-Break down this method and suggest the smallest safe cleanup.
+Break down this method like a dandy.
 ```
 
-## Verification
+## How it works
 
-After code changes, prefer tools over taste:
+Agents load the package lazily:
 
-- Laravel Pint / PSR-12 for formatting;
-- Pest or PHPUnit for behavior;
-- static analysis if the project already uses it.
+1. selected `SKILL.md`;
+2. `dandy-style/source-map.md` for broad reviews;
+3. `dandy-style/recipe-map.md`;
+4. only recipes that fit the task.
+
+This keeps token usage lower and prevents the agent from applying every rule to every request.
 
 ---
 
-# Dandy Code Agent Skills
+## Русский
 
-Skills для AI-агентов, вдохновлённые книгой **«Денди-код»**.
+Dandy Code Agent Skills — небольшой пакет skills для AI-агентов.
 
-Цель простая: помочь агенту писать и проверять PHP/Laravel-код аккуратнее, понятнее и человечнее.
+Он помогает агентам проверять и улучшать PHP/Laravel-код в духе книги **«Денди-код»**: понятный README, единый стиль, «дыхание» кода, честные имена, меньше магических значений, методы поменьше, ранние выходы, полезные комментарии, тесты, правила фреймворка, обновления и аккуратная проверка AI-кода.
 
-Это не абстрактный clean-code-манифест. Skills привязаны к главам книги: README, стиль кода, «дыхание» кода, имена, магические значения, размер методов, ранний выход, условия, аргументы, исключения, комментарии, удаление лишнего, тесты, правила фреймворка, обновления и AI-код.
+## Установка
 
-## Быстрый старт
-
-### Установка локально в проект
+### Локально в проект
 
 ```bash
 cd /path/to/your-project
 npx github:tikhomirov/dandy-code-skills install
 ```
 
-Команда скопирует skills в текущий проект:
+Команда скопирует skills в:
 
 ```text
 .agents/skills
@@ -179,13 +133,13 @@ npx github:tikhomirov/dandy-code-skills install
 .opencode/skills
 ```
 
-### Глобальная установка для пользовательских агентов
+### Глобально для пользовательских агентов
 
 ```bash
 npx github:tikhomirov/dandy-code-skills install --global
 ```
 
-Глобальный режим использует кроссплатформенные пути Node.js:
+Глобальная установка кладёт skills в пользовательские директории:
 
 ```text
 ~/.agents/skills
@@ -193,86 +147,44 @@ npx github:tikhomirov/dandy-code-skills install --global
 ~/.config/opencode/skills
 ```
 
-На Windows эти пути автоматически строятся от домашней директории пользователя.
+Установщик написан на Node.js и использует кроссплатформенный API файловой системы, поэтому должен работать на Linux, macOS и Windows.
 
-### Установить только один вариант
+### Только для одного агента
 
 ```bash
 npx github:tikhomirov/dandy-code-skills install --target agents
 npx github:tikhomirov/dandy-code-skills install --target claude
 npx github:tikhomirov/dandy-code-skills install --target opencode
-npx github:tikhomirov/dandy-code-skills install --global --target claude
 ```
 
-### Установить в другой проект
+Полезные опции:
 
 ```bash
-npx github:tikhomirov/dandy-code-skills install --path /path/to/your-project
-```
-
-### Посмотреть, что будет установлено
-
-```bash
+npx github:tikhomirov/dandy-code-skills install --path /path/to/project
 npx github:tikhomirov/dandy-code-skills install --dry-run
-```
-
-### Ручная установка
-
-```bash
-git clone https://github.com/tikhomirov/dandy-code-skills.git /tmp/dandy-code-skills
-cd /path/to/your-project
-cp -R /tmp/dandy-code-skills/.agents/skills .agents/
-cp -R /tmp/dandy-code-skills/.claude/skills .claude/
-cp -R /tmp/dandy-code-skills/.opencode/skills .opencode/
 ```
 
 ## Skills
 
-### `dandy-style`
+| Skill | Когда использовать |
+|---|---|
+| `dandy-style` | Денди-стиль нужен внутри другой задачи. |
+| `dandy-review` | Нужно ревью проекта, модуля, файла или diff. |
+| `dandy-commit` | Нужно проверить изменения перед коммитом. |
+| `dandy-breakdown` | Нужно разобрать один метод, класс, файл или фрагмент. |
 
-Главный роутер. Нужен, когда денди-стиль используется внутри другой задачи.
-
-```text
-Отрефактори модуль оплаты в денди-стиле.
-```
-
-Агент должен оставить исходную задачу главной, открыть карту рецептов и загрузить только нужные правила.
-
-### `dandy-review`
-
-Ревью проекта, модуля, файла или diff.
+Хорошие промпты:
 
 ```text
-/dandy-review app/Services/OrderService.php
-/dandy-review onboarding
+Проверь проект в денди-стиле.
+Отрефактори модуль оплаты по правилам Денди-кода.
+Проверь diff перед коммитом, как денди.
+Разбери метод, он должен быть как денди.
 ```
-
-`/dandy-start` — alias для первичного ревью: README, запуск, тестовые данные, тесты, структура, ответственные.
-
-### `dandy-commit`
-
-Проверка изменённого кода перед коммитом.
-
-```text
-/dandy-commit review-only
-/dandy-commit fix-safe
-```
-
-Проверяет diff, сверяется со стилем проекта, ловит подозрительный AI-код и предлагает безопасные правки. Коммитить без прямого разрешения нельзя.
-
-### `dandy-breakdown`
-
-Разбор одного метода, класса, файла или вставленного куска кода.
-
-```text
-/dandy-breakdown app/Http/Controllers/CheckoutController.php
-```
-
-Объясняет, что делает код, почему его тяжело читать, какие рецепты подходят и как выглядит минимальная безопасная правка.
 
 ## Как это работает
 
-Агент загружает правила лениво:
+Агент загружает пакет лениво:
 
 1. выбранный `SKILL.md`;
 2. `dandy-style/source-map.md` для широкого ревью;
@@ -280,30 +192,3 @@ cp -R /tmp/dandy-code-skills/.opencode/skills .opencode/
 4. только рецепты, которые подходят к задаче.
 
 Так тратится меньше токенов, и агент не пытается применить все правила сразу.
-
-## Структура пакета
-
-```text
-.agents/skills/          # источник правды
-.claude/skills/          # wrappers для Claude Code
-.opencode/skills/        # wrappers для OpenCode
-bin/dandy-code-skills.mjs
-package.json
-```
-
-## Хорошие промпты
-
-```text
-Проверь проект в денди-стиле.
-Отрефактори модуль оплаты по правилам Денди-кода.
-Проверь diff перед коммитом, как денди.
-Разбери этот метод и предложи минимальную безопасную правку.
-```
-
-## Проверка
-
-После изменений лучше спорить не вкусами, а инструментами:
-
-- Laravel Pint / PSR-12 для форматирования;
-- Pest или PHPUnit для поведения;
-- статический анализ, если он уже используется в проекте.
