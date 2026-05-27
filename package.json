@@ -8,8 +8,6 @@
   },
   "files": [
     ".agents/skills",
-    ".claude/skills",
-    ".opencode/skills",
     "bin/dandy-code-skills.mjs",
     "README.md",
     "CHANGELOG.md"

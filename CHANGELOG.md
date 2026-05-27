@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- `dandy-style` is now shorter and more behavior-oriented: it starts from project/task context, then selects only relevant recipes.
+- Installer now treats `.agents/skills` as the only canonical skills source.
+- Claude Code and OpenCode targets now receive symlinks to canonical `.agents/skills` entries instead of separate wrapper skills.
+- npm package contents no longer include duplicated `.claude/skills` and `.opencode/skills` trees.
+
+### Removed
+
+- Removed duplicated Claude Code wrapper skills from `.claude/skills`.
+- Removed duplicated OpenCode wrapper skills from `.opencode/skills`.
+
 ## 2.1.0
 
 ### Added

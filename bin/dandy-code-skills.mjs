@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..');
+const canonicalSource = path.join(repoRoot, '.agents', 'skills');
 
 const args = process.argv.slice(2);
 const command = args[0] ?? 'help';
@@ -18,19 +19,19 @@ const options = parseOptions(args.slice(1));
 const TARGETS = {
   agents: {
     label: '.agents',
-    source: path.join(repoRoot, '.agents', 'skills'),
+    type: 'copy',
     localDestination: cwd => path.join(cwd, '.agents', 'skills'),
     globalDestination: home => path.join(home, '.agents', 'skills'),
   },
   claude: {
     label: 'Claude Code',
-    source: path.join(repoRoot, '.claude', 'skills'),
+    type: 'symlink',
     localDestination: cwd => path.join(cwd, '.claude', 'skills'),
     globalDestination: home => path.join(home, '.claude', 'skills'),
   },
   opencode: {
     label: 'OpenCode',
-    source: path.join(repoRoot, '.opencode', 'skills'),
+    type: 'symlink',
     localDestination: cwd => path.join(cwd, '.opencode', 'skills'),
     globalDestination: home => path.join(home, '.config', 'opencode', 'skills'),
   },
@@ -76,6 +77,11 @@ async function install(options) {
   const isGlobal = Boolean(interactiveOptions.global);
   const dryRun = Boolean(interactiveOptions.dryRun);
   const clean = interactiveOptions.clean !== false && interactiveOptions.force !== false;
+  const canonicalDestination = getDestination(TARGETS.agents, { root, home, isGlobal });
+
+  if (!fs.existsSync(canonicalSource)) {
+    throw new Error(`Canonical source directory does not exist: ${canonicalSource}`);
+  }
 
   console.log(`Dandy Code Skills installer`);
   console.log(`Mode: ${isGlobal ? 'global' : 'project'}`);
@@ -85,21 +91,27 @@ async function install(options) {
   }
 
   console.log(`Targets: ${selectedTargets.join(', ')}`);
+  console.log(`Canonical skills: ${canonicalDestination}`);
   console.log(`Cleanup old Dandy skills: ${clean ? 'yes' : 'no'}`);
   console.log('');
 
-  for (const targetName of selectedTargets) {
-    const target = TARGETS[targetName];
-    const destination = isGlobal
-      ? target.globalDestination(home)
-      : target.localDestination(root);
+  installCanonicalSkills(canonicalDestination, { dryRun, clean });
 
-    installTarget(target.source, destination, { dryRun, clean });
-    console.log(`${dryRun ? 'Would install' : 'Installed'} ${target.label}: ${destination}`);
+  for (const targetName of selectedTargets) {
+    if (targetName === 'agents') {
+      continue;
+    }
+
+    const target = TARGETS[targetName];
+    const destination = getDestination(target, { root, home, isGlobal });
+
+    installLinkedTarget(canonicalDestination, destination, { dryRun, clean });
+    console.log(`${dryRun ? 'Would link' : 'Linked'} ${target.label}: ${destination}`);
   }
 
   console.log('');
-  console.log('Done. Use /dandy-review, /dandy-commit, /dandy-breakdown, or mention dandy-style in your task.');
+  console.log('Done. Canonical skills live in .agents/skills; Claude/OpenCode targets link to them.');
+  console.log('Use /dandy-review, /dandy-commit, /dandy-breakdown, or mention dandy-style in your task.');
 }
 
 async function maybeAskInteractiveOptions(options) {
@@ -153,23 +165,25 @@ function normalizeAnswer(answer, fallback) {
   return answer === '' ? fallback : answer;
 }
 
-function installTarget(source, destination, { dryRun, clean }) {
-  if (!fs.existsSync(source)) {
-    throw new Error(`Source directory does not exist: ${source}`);
+function getDestination(target, { root, home, isGlobal }) {
+  return isGlobal
+    ? target.globalDestination(home)
+    : target.localDestination(root);
+}
+
+function installCanonicalSkills(destination, { dryRun, clean }) {
+  if (path.resolve(canonicalSource) === path.resolve(destination)) {
+    console.log(`Canonical source and destination are the same, skipping copy: ${destination}`);
+    return;
   }
 
   if (dryRun) {
     if (clean) {
-      for (const entry of DANDY_OWNED_ENTRIES) {
-        const ownedPath = path.join(destination, entry);
-        if (fs.existsSync(ownedPath)) {
-          console.log(`Would remove old Dandy entry: ${ownedPath}`);
-        }
-      }
+      logCleanupPlan(destination);
     }
 
-    for (const entry of fs.readdirSync(source)) {
-      console.log(`Would copy: ${path.join(source, entry)} -> ${path.join(destination, entry)}`);
+    for (const entry of fs.readdirSync(canonicalSource)) {
+      console.log(`Would copy canonical: ${path.join(canonicalSource, entry)} -> ${path.join(destination, entry)}`);
     }
 
     return;
@@ -181,17 +195,53 @@ function installTarget(source, destination, { dryRun, clean }) {
     removeOldDandyEntries(destination);
   }
 
-  copyDirectoryContents(source, destination);
+  copyDirectoryContents(canonicalSource, destination);
+  console.log(`Installed canonical .agents: ${destination}`);
+}
+
+function installLinkedTarget(canonicalDestination, destination, { dryRun, clean }) {
+  if (dryRun) {
+    if (clean) {
+      logCleanupPlan(destination);
+    }
+
+    for (const entry of fs.readdirSync(canonicalSource)) {
+      console.log(`Would symlink: ${path.join(destination, entry)} -> ${path.join(canonicalDestination, entry)}`);
+    }
+
+    return;
+  }
+
+  fs.mkdirSync(destination, { recursive: true });
+
+  if (clean) {
+    removeOldDandyEntries(destination);
+  }
+
+  linkDirectoryContents(canonicalDestination, destination, { clean });
+}
+
+function logCleanupPlan(destination) {
+  for (const entry of DANDY_OWNED_ENTRIES) {
+    const ownedPath = path.join(destination, entry);
+    if (fs.existsSync(ownedPath)) {
+      console.log(`Would remove old Dandy entry: ${ownedPath}`);
+    }
+  }
 }
 
 function removeOldDandyEntries(destination) {
   for (const entry of DANDY_OWNED_ENTRIES) {
     const ownedPath = path.join(destination, entry);
 
-    if (fs.existsSync(ownedPath)) {
+    if (pathExistsOrSymlink(ownedPath)) {
       fs.rmSync(ownedPath, { recursive: true, force: true });
     }
   }
+}
+
+function pathExistsOrSymlink(value) {
+  return fs.existsSync(value) || Boolean(fs.lstatSync(value, { throwIfNoEntry: false })?.isSymbolicLink());
 }
 
 function copyDirectoryContents(source, destination) {
@@ -203,7 +253,30 @@ function copyDirectoryContents(source, destination) {
       recursive: true,
       force: true,
       errorOnExist: false,
+      dereference: false,
     });
+  }
+}
+
+function linkDirectoryContents(canonicalDestination, destination, { clean }) {
+  for (const entry of fs.readdirSync(canonicalDestination)) {
+    const from = path.join(canonicalDestination, entry);
+    const to = path.join(destination, entry);
+
+    if (pathExistsOrSymlink(to)) {
+      if (!clean) {
+        throw new Error(`Cannot create symlink because destination already exists: ${to}. Re-run without --no-clean.`);
+      }
+
+      fs.rmSync(to, { recursive: true, force: true });
+    }
+
+    const relativeTarget = path.relative(path.dirname(to), from);
+    const type = fs.statSync(from).isDirectory()
+      ? (process.platform === 'win32' ? 'junction' : 'dir')
+      : 'file';
+
+    fs.symlinkSync(relativeTarget, to, type);
   }
 }
 

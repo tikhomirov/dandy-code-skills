@@ -58,7 +58,11 @@ npx github:tikhomirov/dandy-code-skills install --path /path/to/project --yes
 npx github:tikhomirov/dandy-code-skills install --dry-run
 ```
 
-By default the installer removes old Dandy-owned skill entries before copying the new version. It does **not** delete the whole `skills` directory, so custom user skills should stay safe.
+Canonical skills are stored only in `.agents/skills`.
+
+When installing for Claude Code or OpenCode, the installer first installs the canonical `.agents/skills` directory, then creates symlinks from the target skills directory to the canonical entries. This keeps Claude/OpenCode skills from drifting away from the `.agents` source.
+
+By default the installer removes old Dandy-owned skill entries before copying/linking the new version. It does **not** delete the whole `skills` directory, so custom user skills should stay safe.
 
 Use `--no-clean` to skip cleanup.
 
@@ -81,6 +85,14 @@ Break down this method like a dandy.
 ```
 
 ## How it works
+
+The package has one canonical skills tree:
+
+```text
+.agents/skills/
+```
+
+Claude Code and OpenCode installations link to the canonical `.agents/skills` entries instead of shipping separate wrapper skills.
 
 Agents load the package lazily:
 
@@ -124,7 +136,11 @@ npx github:tikhomirov/dandy-code-skills install --path /path/to/project --yes
 npx github:tikhomirov/dandy-code-skills install --dry-run
 ```
 
-По умолчанию установщик удаляет старые Dandy-owned skills и затем копирует новую версию. Он **не удаляет всю папку** `skills`, поэтому пользовательские skills не должны пострадать.
+Каноническая версия skills хранится только в `.agents/skills`.
+
+При установке для Claude Code или OpenCode установщик сначала ставит каноническую `.agents/skills`, а затем создаёт symlink-и из целевой папки skills на канонические entries. Так Claude/OpenCode skills не расходятся с `.agents`-источником.
+
+По умолчанию установщик удаляет старые Dandy-owned skills и затем копирует/линкует новую версию. Он **не удаляет всю папку** `skills`, поэтому пользовательские skills не должны пострадать.
 
 Чтобы пропустить очистку, используй `--no-clean`.
 
@@ -147,6 +163,14 @@ npx github:tikhomirov/dandy-code-skills install --dry-run
 ```
 
 ## Как это работает
+
+В пакете есть одно каноническое дерево skills:
+
+```text
+.agents/skills/
+```
+
+Установки для Claude Code и OpenCode ссылаются на канонические entries из `.agents/skills`, а не поставляют отдельные wrapper-skills.
 
 Агент загружает пакет лениво:
 
