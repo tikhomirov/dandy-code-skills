@@ -111,7 +111,7 @@ async function install(options) {
 
   console.log('');
   console.log('Done. Canonical skills live in .agents/skills; Claude/OpenCode targets link to them.');
-  console.log('Use /dandy-review, /dandy-commit, /dandy-breakdown, or mention dandy-style in your task.');
+  console.log('Use /dandy-style, /dandy-commit, or mention Dandy Code in your task.');
 }
 
 async function maybeAskInteractiveOptions(options) {

@@ -1,6 +1,6 @@
 {
   "name": "dandy-code-skills",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Dandy Code skills for AI coding agents: Claude Code, OpenCode, codex-style agents and .agents-compatible setups.",
   "type": "module",
   "bin": {

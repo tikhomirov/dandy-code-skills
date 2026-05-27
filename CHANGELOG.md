@@ -1,5 +1,25 @@
 # Changelog
 
+## 3.0.0
+
+### Changed
+
+- Simplified public entrypoints to two skills:
+  - `dandy-style` for review, improvement, refactor planning, and local code analysis;
+  - `dandy-commit` for checking changed code before commit.
+- README now directs broad review and local code analysis prompts to `dandy-style`.
+- Installer final hint now suggests `/dandy-style`, `/dandy-commit`, or mentioning Dandy Code in the task.
+
+### Removed
+
+- Removed `dandy-review` as a public entrypoint skill. Its behavior is now covered by `dandy-style` direct invocation.
+- Removed `dandy-breakdown` as a public entrypoint skill. Its behavior is now covered by `dandy-style` local code review mode.
+
+### Migration
+
+- Use `/dandy-style` instead of `/dandy-review` or `/dandy-breakdown`.
+- The installer still removes old `dandy-review` and `dandy-breakdown` entries from existing installations during cleanup.
+
 ## 2.2.0
 
 ### Changed
