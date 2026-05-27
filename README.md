@@ -70,18 +70,16 @@ Use `--no-clean` to skip cleanup.
 
 | Skill | Use when |
 |---|---|
-| `dandy-style` | Dandy style is a constraint inside another task. |
-| `dandy-review` | You need a review of a project, module, file, or diff. |
+| `dandy-style` | You need Dandy Code style for review, improvement, refactor planning, or local code analysis. |
 | `dandy-commit` | You want to check changed code before commit. |
-| `dandy-breakdown` | You want to analyze one method, class, file, or snippet. |
 
 Good prompts:
 
 ```text
 Review this project in dandy style.
+Analyze this method in dandy style.
 Refactor the payment module using Dandy Code rules.
 Check the diff before commit, like a dandy.
-Break down this method like a dandy.
 ```
 
 ## How it works
@@ -148,18 +146,16 @@ npx github:tikhomirov/dandy-code-skills install --dry-run
 
 | Skill | Когда использовать |
 |---|---|
-| `dandy-style` | Денди-стиль нужен внутри другой задачи. |
-| `dandy-review` | Нужно ревью проекта, модуля, файла или diff. |
+| `dandy-style` | Нужен Денди-код для ревью, улучшения, плана рефакторинга или локального разбора кода. |
 | `dandy-commit` | Нужно проверить изменения перед коммитом. |
-| `dandy-breakdown` | Нужно разобрать один метод, класс, файл или фрагмент. |
 
 Хорошие промпты:
 
 ```text
 Проверь проект в денди-стиле.
+Разбери этот метод по Денди-коду.
 Отрефактори модуль оплаты по правилам Денди-кода.
 Проверь diff перед коммитом, как денди.
-Разбери метод, он должен быть как денди.
 ```
 
 ## Как это работает
