@@ -4,7 +4,7 @@
   "description": "Dandy Code skills for AI coding agents: Claude Code, OpenCode, codex-style agents and .agents-compatible setups.",
   "type": "module",
   "bin": {
-    "dandy-code-skills": "./bin/dandy-code-skills.mjs"
+    "dandy-code-skills": "bin/dandy-code-skills.mjs"
   },
   "files": [
     ".agents/skills",
