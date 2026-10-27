@@ -10,7 +10,8 @@
     ".agents/skills",
     "bin/dandy-code-skills.mjs",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "skills"
   ],
   "scripts": {
     "install:local": "node ./bin/dandy-code-skills.mjs install --yes",
