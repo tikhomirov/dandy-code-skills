@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, '..');
-const canonicalSource = path.join(repoRoot, '.agents', 'skills');
+const canonicalSource = path.join(repoRoot, 'skills');
 
 const args = process.argv.slice(2);
 const command = args[0] ?? 'help';

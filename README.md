@@ -87,7 +87,7 @@ Check the diff before commit, like a dandy.
 The package has one canonical skills tree:
 
 ```text
-.agents/skills/
+skills/
 ```
 
 Claude Code and OpenCode installations link to the canonical `.agents/skills` entries instead of shipping separate wrapper skills.
@@ -163,7 +163,7 @@ npx github:tikhomirov/dandy-code-skills install --dry-run
 В пакете есть одно каноническое дерево skills:
 
 ```text
-.agents/skills/
+skills/
 ```
 
 Установки для Claude Code и OpenCode ссылаются на канонические entries из `.agents/skills`, а не поставляют отдельные wrapper-skills.

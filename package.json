@@ -7,7 +7,6 @@
     "dandy-code-skills": "bin/dandy-code-skills.mjs"
   },
   "files": [
-    ".agents/skills",
     "bin/dandy-code-skills.mjs",
     "README.md",
     "CHANGELOG.md",
